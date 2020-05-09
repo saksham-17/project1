@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block body %}
+<br>
+<div class='container row no-gutters'>
+    <div class='container text-warning  text-center my-2'><h1>{{data.title}}</h1></div>
+    <div class='col border my-3 text-white p-1'>
+        <h3><b>&nbsp&nbsp&nbspAuthor</b>: {{data.author}}</h3>
+        <h3><b>&nbsp&nbsp&nbspYear</b>: {{data.year}}</h3>
+        <h3><b>&nbsp&nbsp&nbspIsbn</b>: {{data.isbn}}</h3>
+        <br>
+      <div class='p-1 border-dark bg-dark'>
+        <h3 class=''> &nbsp Source:<a href="https://www.goodreads.com/"> goodread.com</a>  </h3>
+        <h3> &nbsp Rating: {{average_rating}}/5</h3>
+        <h3 class=''>&nbsp Reviews received: {{work_ratings_count}} </h3>
+      </div><br>
+    </div>
+</div>
+{% if reviews != None %}
+{% for x in reviews %}
+<div class='border border-primary container my-3 '><br>
+    <h5 class="text-danger">User: {{x.username}}</h5>
+    <blockquote class="blockquote text-info p-1">
+    <h5>Rating: {{x.rating}} of 5</h5>
+    <h5>Review: {{x.review}}</h5>
+    </blockquote>
+</div>
+{% endfor %}
+{% endif %}
+<div class='text-center text-danger'>{{warning}}</div>
+<div class='container border my-2'><br>
+    <form class='form-group ' action="{{url_for('bookpage',isbn=data.isbn)}}" method="POST">
+        <label class='text-danger'><h5>Write your review...</h5></label>
+        <select name="stars" class='m-1' required>
+            <option selected value disabled> -- select rating -- </option>
+            <option value="1">1 star</option>
+            <option value="2">2 stars</option>
+            <option value="3">3 stars</option>
+            <option value="4">4 stars</option>
+            <option value="5">5 stars</option>
+        </select>
+        <textarea class='bg-white form-control' name='textarea'>
+        </textarea>
+        <input class='my-2' type='submit' value='Send'>
+    </form>
+</div>
+<div class='text-right '><a href='/api/{{data.isbn}}'><h3>API</h3></a></div>
+
+{% endblock %}
